@@ -1,0 +1,17 @@
+# Gemfile — Blitz Release Tool
+# Exact versions tested and working for Android + iOS fastlane pipelines
+# Ruby 3.2+ required. Install: brew install ruby
+
+source "https://rubygems.org"
+
+gem "fastlane", "~> 2.219"
+gem "cocoapods", "~> 1.14"        # iOS pod install
+gem "json",      "~> 2.7"
+gem "dotenv",    "~> 2.8"         # Load .env in Fastfile
+
+# Android
+gem "supply",    "~> 0.9"         # Google Play uploads (bundled in fastlane)
+
+# iOS
+gem "deliver",   "~> 2.0"         # App Store uploads (bundled in fastlane)
+gem "match",     "~> 1.0"         # Certificate management (bundled in fastlane)

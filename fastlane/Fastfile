@@ -1,0 +1,80 @@
+default_platform(:android)
+
+# ─────────────────────────────────────────────────────────────
+# ANDROID
+# ─────────────────────────────────────────────────────────────
+platform :android do
+
+  desc "Deploy AAB to Google Play"
+  lane :deploy do |options|
+    supply(
+      package_name:   options[:package_name],
+      track:          options[:track] || "production",
+      aab:            options[:aab],
+      metadata_path:  options[:metadata_path],
+      json_key:       ENV["GOOGLE_PLAY_JSON_KEY_PATH"],
+      skip_upload_apk: true,
+      skip_upload_aab: false,
+      skip_upload_metadata: false,
+      skip_upload_screenshots: false,
+      skip_upload_images: false
+    )
+  end
+
+  desc "Upload screenshots only (no binary)"
+  lane :upload_screenshots do |options|
+    supply(
+      package_name:   options[:package_name],
+      metadata_path:  options[:metadata_path],
+      json_key:       ENV["GOOGLE_PLAY_JSON_KEY_PATH"],
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+end
+
+# ─────────────────────────────────────────────────────────────
+# iOS
+# ─────────────────────────────────────────────────────────────
+platform :ios do
+
+  desc "Sync certificates via fastlane match"
+  lane :sync_certs do |options|
+    match(
+      type:           "appstore",
+      app_identifier: options[:bundle_id],
+      git_url:        ENV["MATCH_GIT_URL"],
+      readonly:       true
+    )
+  end
+
+  desc "Deploy IPA to App Store Connect"
+  lane :deploy do |options|
+    deliver(
+      ipa:                options[:ipa],
+      app_identifier:     options[:bundle_id],
+      metadata_path:      options[:metadata_path],
+      submit_for_review:  options[:submit_for_review] || false,
+      automatic_release:  false,
+      force:              true,
+      api_key_path:       ENV["APP_STORE_KEY_PATH"]
+    )
+  end
+
+  desc "Upload screenshots only"
+  lane :upload_screenshots do |options|
+    deliver(
+      app_identifier:     options[:bundle_id],
+      metadata_path:      options[:metadata_path],
+      skip_binary_upload: true,
+      skip_metadata:      false,
+      skip_screenshots:   false,
+      force:              true,
+      api_key_path:       ENV["APP_STORE_KEY_PATH"]
+    )
+  end
+
+end

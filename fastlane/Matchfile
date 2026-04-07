@@ -1,0 +1,19 @@
+# fastlane/Matchfile
+# Manages iOS certificates and provisioning profiles via a private git repo
+# Setup: https://docs.fastlane.tools/actions/match/
+
+git_url        ENV["MATCH_GIT_URL"]
+storage_mode   "git"
+type           "appstore"          # default type; override per lane
+
+# All your app bundle IDs — add new ones here as you create iOS apps
+app_identifier [
+  "com.sudarshantechlabs.myfamilytracker",
+  # Add more as you build iOS versions
+]
+
+username       ENV["APPLE_ID"] || "sunny.sudarshan@gmail.com"
+team_id        ENV["APPLE_TEAM_ID"]
+
+# Never prompt for passwords in CI
+readonly       ENV["CI"] ? true : false

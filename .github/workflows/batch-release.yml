@@ -1,0 +1,76 @@
+name: Weekly Batch Release
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'   # Every Monday 2:00 AM UTC (9:00 AM Bangkok)
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform'
+        type: choice
+        options: [android, ios, both]
+        default: android
+      skip_screenshots:
+        type: boolean
+        default: true
+
+jobs:
+  batch-release:
+    runs-on: self-hosted
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup credentials
+        run: |
+          mkdir -p ~/.appwhoosh/credentials
+          echo '${{ secrets.GOOGLE_PLAY_JSON_KEY }}' > ~/.appwhoosh/credentials/play-key.json
+          cat > .env << EOF
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_PLAY_JSON_KEY_PATH=$HOME/.appwhoosh/credentials/play-key.json
+          KEYSTORE_BASE_PATH=${{ secrets.KEYSTORE_BASE_PATH }}
+          KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_PASSWORD=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          BUILD_OUTPUT_DIR=/tmp/appwhoosh-builds
+          TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}
+          EOF
+
+      - name: Run batch release
+        id: batch
+        run: |
+          node cli/index.js release-all \
+            --android-only \
+            --skip-screenshots \
+            2>&1 | tee /tmp/batch-output.txt
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Post summary
+        if: always()
+        run: |
+          echo "## Weekly Batch Release" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat /tmp/batch-output.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify Telegram
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          if [ "$STATUS" = "success" ]; then
+            MSG="✅ *Weekly Batch Release Complete*%0AAll apps released to Play Store."
+          else
+            MSG="❌ *Weekly Batch Release Failed*%0ACheck GitHub Actions for details."
+          fi
+          curl -s "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=$MSG" \
+            -d "parse_mode=Markdown"

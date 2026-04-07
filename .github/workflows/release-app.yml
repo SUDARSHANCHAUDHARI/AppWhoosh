@@ -1,0 +1,79 @@
+name: Release App
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: 'App ID (e.g. myfamilytracker)'
+        required: true
+        type: string
+      platform:
+        description: 'Platform'
+        required: true
+        type: choice
+        options: [android, ios, both]
+        default: android
+      track:
+        description: 'Release track'
+        required: true
+        type: choice
+        options: [internal, alpha, beta, production]
+        default: production
+      skip_screenshots:
+        description: 'Skip screenshot capture'
+        type: boolean
+        default: false
+
+jobs:
+  release:
+    runs-on: self-hosted  # Requires macOS self-hosted runner
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup credentials
+        run: |
+          mkdir -p ~/.appwhoosh/credentials
+          echo '${{ secrets.GOOGLE_PLAY_JSON_KEY }}' > ~/.appwhoosh/credentials/play-key.json
+          echo '${{ secrets.APP_STORE_API_KEY }}' > ~/.appwhoosh/credentials/AuthKey.p8
+
+      - name: Create .env
+        run: |
+          cat > .env << EOF
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_PLAY_JSON_KEY_PATH=$HOME/.appwhoosh/credentials/play-key.json
+          APP_STORE_KEY_ID=${{ secrets.APP_STORE_KEY_ID }}
+          APP_STORE_ISSUER_ID=${{ secrets.APP_STORE_ISSUER_ID }}
+          APP_STORE_KEY_PATH=$HOME/.appwhoosh/credentials/AuthKey.p8
+          MATCH_GIT_URL=${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD=${{ secrets.MATCH_PASSWORD }}
+          KEYSTORE_BASE_PATH=${{ secrets.KEYSTORE_BASE_PATH }}
+          KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_PASSWORD=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          BUILD_OUTPUT_DIR=/tmp/appwhoosh-builds
+          EOF
+
+      - name: Run release
+        run: |
+          SKIP_FLAG=""
+          if [ "${{ inputs.skip_screenshots }}" = "true" ]; then
+            SKIP_FLAG="--skip-screenshots"
+          fi
+          node cli/index.js release ${{ inputs.app_id }} \
+            --${{ inputs.platform }}-only \
+            $SKIP_FLAG
+
+      - name: Post summary
+        if: always()
+        run: |
+          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- App: \`${{ inputs.app_id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Platform: ${{ inputs.platform }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Track: ${{ inputs.track }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY

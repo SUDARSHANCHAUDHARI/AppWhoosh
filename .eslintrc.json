@@ -1,0 +1,23 @@
+{
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "rules": {
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-console": ["warn", { "allow": ["error"] }],
+    "prefer-const": "error",
+    "eqeqeq": ["error", "always"],
+    "no-var": "error",
+    "no-process-exit": "warn",
+    "handle-callback-err": "error"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "tests/fixtures/",
+    "BlitzMenuBar/"
+  ]
+}

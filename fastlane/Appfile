@@ -1,0 +1,12 @@
+# fastlane/Appfile
+# Default app identifiers — overridden per-lane via options
+
+# Android
+json_key_file ENV["GOOGLE_PLAY_JSON_KEY_PATH"]
+package_name  "com.sudarshantechlabs.placeholder"  # overridden per app
+
+# iOS
+app_identifier "com.sudarshantechlabs.placeholder"  # overridden per app
+apple_id       ENV["APPLE_ID"] || "sunny.sudarshan@gmail.com"
+team_id        ENV["APPLE_TEAM_ID"]
+itc_team_id    ENV["ITC_TEAM_ID"]

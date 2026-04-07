@@ -1,0 +1,1 @@
+{ "_comment": "AppWhoosh master app registry", "apps": [{ "id": "example-app", "configPath": "apps/example-app/config.json", "enabled": true, "platforms": ["android"] }], "defaults": { "android": { "track": "production" } } }

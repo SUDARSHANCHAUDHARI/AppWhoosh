@@ -1,0 +1,22 @@
+{
+  "name": "appwhoosh",
+  "version": "1.0.0",
+  "description": "AI-powered macOS release pipeline for Android + iOS apps. Ship your apps. Whoosh.",
+  "main": "cli/index.js",
+  "bin": { "appwhoosh": "./cli/index.js" },
+  "scripts": {
+    "start":      "node mcp/server.js",
+    "cli":        "node cli/index.js",
+    "test":       "node --test tests/*.test.js",
+    "test:watch": "node --test --watch tests/*.test.js",
+    "setup":      "bash scripts/setup.sh"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "commander":         "^11.1.0",
+    "dotenv":            "^16.3.1"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "os":      ["darwin"],
+  "license": "MIT"
+}

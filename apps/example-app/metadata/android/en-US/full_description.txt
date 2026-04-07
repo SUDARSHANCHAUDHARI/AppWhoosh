@@ -1,0 +1,10 @@
+Example App
+
+A useful utility app designed to make your life easier.
+
+Features:
+• Simple and intuitive interface
+• Fast and lightweight
+• Free to use
+
+Developed by SudarshanTechLabs.
