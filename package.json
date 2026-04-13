@@ -12,7 +12,7 @@
     "setup":      "bash scripts/setup.sh"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.20.0",
+    "@anthropic-ai/sdk": "^0.88.0",
     "commander":         "^11.1.0",
     "dotenv":            "^16.3.1"
   },
