@@ -75,7 +75,7 @@ The keystore is permanently tied to your Play Store listing.
 - Never share via email or Slack
 - Store password in macOS Keychain as backup:
   ```bash
-  security add-generic-password -a "appwhoosh" -s "keystore-password" -w "SUD@28.COM"
+  security add-generic-password -a "appwhoosh" -s "keystore-password" -w "YOUR_KEYSTORE_PASSWORD"
   # Retrieve:
   security find-generic-password -a "appwhoosh" -s "keystore-password" -w
   ```
