@@ -35,3 +35,4 @@ secrets.*
 credentials.*
 *.jks
 local.properties
+PLAN.md
