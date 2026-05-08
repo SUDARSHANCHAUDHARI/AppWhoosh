@@ -7,6 +7,6 @@ package_name  "com.sudarshantechlabs.placeholder"  # overridden per app
 
 # iOS
 app_identifier "com.sudarshantechlabs.placeholder"  # overridden per app
-apple_id       ENV["APPLE_ID"] || "sunny.sudarshan@gmail.com"
+apple_id       ENV["APPLE_ID"]
 team_id        ENV["APPLE_TEAM_ID"]
 itc_team_id    ENV["ITC_TEAM_ID"]
