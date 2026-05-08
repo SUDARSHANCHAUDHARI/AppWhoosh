@@ -12,7 +12,7 @@ app_identifier [
   # Add more as you build iOS versions
 ]
 
-username       ENV["APPLE_ID"] || "sunny.sudarshan@gmail.com"
+username       ENV["APPLE_ID"]
 team_id        ENV["APPLE_TEAM_ID"]
 
 # Never prompt for passwords in CI
