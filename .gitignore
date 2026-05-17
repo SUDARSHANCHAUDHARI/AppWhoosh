@@ -36,3 +36,6 @@ credentials.*
 *.jks
 local.properties
 PLAN.md
+
+# graphify knowledge graph
+graphify-out/
