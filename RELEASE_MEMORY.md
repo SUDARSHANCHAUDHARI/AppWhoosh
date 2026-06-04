@@ -42,3 +42,4 @@ Run setup and doctor, then verify dry-run protections.
 
 - Updated `.env.example` and credential-rotation docs to use `YOUR_*` placeholders for API keys, Apple/Google paths, match password, keystore values, Telegram values, and local username paths.
 - Current release type remains POC/internal release tool until doctor, dry-run protections, fixture AAB flow, and store credential safety are verified.
+- Polished README with POC/internal CLI status, technical decisions, setup, verification, known limits, and store-safety blockers.
