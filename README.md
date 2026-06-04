@@ -1,165 +1,103 @@
-# AppWhoosh ⚡
+# AppWhoosh
 
-> Ship your apps. Whoosh.
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](package.json)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933.svg)](https://nodejs.org/)
+[![macOS](https://img.shields.io/badge/platform-macOS-lightgrey.svg)](https://www.apple.com/macos/)
+[![Release](https://img.shields.io/badge/release-POC%20internal%20tool-orange.svg)](RELEASE_MEMORY.md)
 
-AI-powered macOS release pipeline for Android + iOS apps.
-One command releases all your apps to Google Play and App Store Connect.
+AI-powered macOS release pipeline concept for Android and iOS apps. AppWhoosh aims to build, package, validate, and deploy mobile releases from one CLI.
 
-Built by SudarshanTechLabs.
+> **Status:** POC/internal release tool · not production-ready until doctor checks, dry-run protections, fixture AAB flow, iOS archive flow, and store credential safety are verified
 
----
+## Why This Exists
 
-## What it does
+Mobile release work repeats across apps: version bumps, signed Android bundles, iOS archives, screenshots, metadata, store uploads, and notifications. AppWhoosh explores a single CLI workflow for that release pipeline.
 
-You type:
-```bash
-appwhoosh ask "release all apps"
-```
+## Status
 
-AppWhoosh does:
-1. Bumps version codes
-2. Builds signed AABs / IPAs
-3. Captures Play Store / App Store screenshots
-4. Uploads metadata
-5. Submits to Google Play + App Store Connect
-6. Notifies you via macOS + Telegram
+| Item | State |
+|---|---|
+| Release type | POC/internal CLI |
+| Platform | macOS only |
+| Android flow | Pending fixture dry run |
+| iOS flow | Pending archive verification |
+| Store submission | Must stay guarded by dry-run safety |
 
----
+## Key Technical Decisions
 
-## Requirements
+**The tool is macOS-only.** Android and iOS release tooling depends on Xcode, fastlane, Android Studio, signing assets, and local machine state.
 
-- macOS 13+ only
-- Node.js 18+
-- Android Studio + ADB (for Android)
-- Xcode 15+ (for iOS)
-- fastlane (`gem install fastlane`)
+**A doctor command is required before release workflows.** Store credentials and local toolchains are sensitive; preflight checks should catch missing configuration before build/deploy commands run.
 
----
+**Dry-run behavior is mandatory before real store submission.** A release tool must make accidental real submission difficult during testing.
+
+**Credentials stay in `.env` and local files.** Examples use `YOUR_*` placeholders and should never include real signing or store material.
+
+## Features
+
+- natural-language `appwhoosh ask` command concept
+- app registry/config commands
+- Android build/deploy command area
+- iOS archive/deploy command area
+- metadata validation command area
+- Telegram/macOS notification concept
+- credential rotation docs
 
 ## Setup
 
 ```bash
-# 1. Clone / unzip
-cd appwhoosh/
-
-# 2. Run setup (installs deps, creates .env, links CLI)
 bash scripts/setup.sh
+```
 
-# 3. Fill in credentials
+Then configure:
+
+```bash
 nano .env
-
-# 4. Health check
 appwhoosh doctor
-
-# 5. Add your first app
 appwhoosh config add
-
-# 6. First release
-appwhoosh ask "list all apps"
 ```
 
----
-
-## CLI Commands
+## Core Commands
 
 ```bash
-appwhoosh ask "<natural language>"     # AI agent
-appwhoosh list                         # List all apps
-appwhoosh doctor                       # Health check
-appwhoosh dashboard                    # Status dashboard
-
-appwhoosh build <app-id>               # Build Android + iOS
-appwhoosh screenshots <app-id>         # Capture screenshots
-appwhoosh deploy <app-id> --aab <path> # Deploy to stores
-appwhoosh release <app-id>             # Full pipeline
-appwhoosh release-all                  # Release every app
-
-appwhoosh config add                   # Add new app
-appwhoosh config validate <app-id>     # Validate config
-
-appwhoosh metadata validate <app-id>   # Check metadata
-appwhoosh metadata scaffold <app-id>   # Create metadata files
-appwhoosh metadata changelog <app-id>  # Update changelog
-
-appwhoosh version bump <app-id>        # Bump version
-appwhoosh version table                # Show all versions
-
-appwhoosh aso audit <app-id>           # ASO score
-appwhoosh aso optimize <app-id>        # AI-optimize metadata
-appwhoosh aso keywords <app-id>        # Keyword research
-
-appwhoosh translate app <app-id> --to hi-IN   # Translate metadata
-appwhoosh translate all --to th-TH            # Translate all apps
-
-appwhoosh batch release                # Batch release all
-appwhoosh batch validate               # Batch validate metadata
-
-appwhoosh android keystore create <app-id>
-appwhoosh android keystore verify <app-id>
-
-appwhoosh history <app-id>             # Release history
-appwhoosh notify test                  # Test notifications
+appwhoosh ask "<natural language>"
+appwhoosh list
+appwhoosh doctor
+appwhoosh dashboard
+appwhoosh build <app-id>
+appwhoosh screenshots <app-id>
+appwhoosh deploy <app-id> --aab <path>
+appwhoosh release <app-id>
+appwhoosh release-all
+appwhoosh config add
+appwhoosh config validate <app-id>
+appwhoosh metadata validate <app-id>
 ```
 
----
+## Verification
 
-## Project Structure
-
-```
-appwhoosh/
-├── cli/index.js              ← CLI entry point
-├── mcp/
-│   ├── server.js             ← Claude API agentic loop
-│   └── tools.js              ← Tool registry (15 tools)
-├── tools/
-│   ├── config.js             ← App config loader
-│   ├── build-android.js      ← Gradle build
-│   ├── build-ios.js          ← Xcode archive
-│   ├── deploy.js             ← fastlane supply + deliver
-│   ├── screenshots.js        ← ADB + simctl
-│   ├── metadata.js           ← Metadata validation
-│   ├── logger.js             ← Coloured terminal logger
-│   ├── errors.js             ← Custom error classes
-│   ├── notify.js             ← macOS + Telegram
-│   ├── history.js            ← Release history
-│   ├── version.js            ← Version bumping
-│   ├── keystore.js           ← Keystore management
-│   ├── preflight.js          ← blitz doctor checks
-│   ├── batch.js              ← Batch operations
-│   ├── aso.js                ← ASO optimization
-│   └── translate.js          ← AI translation
-├── apps/<app-id>/
-│   ├── config.json           ← Per-app config
-│   └── metadata/             ← fastlane metadata
-├── scripts/
-│   ├── setup.sh              ← One-shot setup
-│   └── screenshots/          ← Per-app screenshot scripts
-├── config/registry.json      ← Master app list
-├── fastlane/Fastfile         ← Android + iOS lanes
-├── AppWhooshMenuBar/         ← macOS SwiftUI menu bar app
-├── tests/                    ← Test suite
-└── .github/workflows/        ← CI/CD
-```
-
----
-
-## Adding a new app
+Before internal release:
 
 ```bash
-appwhoosh config add
-# Follow the prompts — done in 2 minutes
+npm test
+appwhoosh doctor
 ```
 
----
+Then verify:
 
-## macOS Menu Bar App
+- setup script on a safe machine
+- dry-run protections for deployment
+- Android fixture AAB path
+- iOS archive path if Xcode credentials are ready
+- credential redaction in logs
 
-Open `AppWhooshMenuBar/AppWhooshApp.swift` in Xcode.
-See `docs/xcode-setup.md` for full instructions.
+## Known Limits
 
----
+- Real store submission should not be enabled until dry-run rehearsals pass.
+- Android/iOS local toolchains can vary by machine.
+- Signing keys and App Store credentials are high-risk secrets.
+- A fixture release rehearsal is still required.
 
-## Developer
+## Author
 
-**SudarshanTechLabs** · Bangkok, Thailand
-GitHub: [SUDARSHANCHAUDHARI](https://github.com/SUDARSHANCHAUDHARI)
+Built by **Sudarshan Chaudhari** — SudarshanTechLabs.
