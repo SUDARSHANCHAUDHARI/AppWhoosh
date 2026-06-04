@@ -8,7 +8,7 @@ Rotate credentials regularly. This guide covers each credential type.
 
 1. Go to: https://console.anthropic.com → API Keys
 2. Create new key → name it `appwhoosh-v2` (include date)
-3. Update `.env`: `ANTHROPIC_API_KEY=sk-ant-...new...`
+3. Update `.env`: `ANTHROPIC_API_KEY=YOUR_NEW_ANTHROPIC_API_KEY`
 4. Test: `appwhoosh ask "list apps"`
 5. Delete old key in Anthropic Console
 
@@ -20,7 +20,7 @@ Rotate credentials regularly. This guide covers each credential type.
 2. Click `appwhoosh-release-tool` service account → Keys tab
 3. Add Key → Create New Key → JSON → Download
 4. Move to `~/.appwhoosh/credentials/sudarshantechlabs-play-key-new.json`
-5. Update `.env`: `GOOGLE_PLAY_JSON_KEY_PATH=.../sudarshantechlabs-play-key-new.json`
+5. Update `.env`: `GOOGLE_PLAY_JSON_KEY_PATH=/Users/YOUR_MAC_USERNAME/.appwhoosh/credentials/YOUR_NEW_PLAY_KEY_FILE.json`
 6. Test: `appwhoosh deploy <any-app> --dry-run` (if supported) or `appwhoosh list`
 7. Delete old key in Google Cloud Console (Keys tab → Delete)
 
