@@ -63,8 +63,6 @@ describe("metadata validation", () => {
     const titlePath = path.join(META_DIR, "title.txt");
     if (fs.existsSync(titlePath)) fs.unlinkSync(titlePath);
 
-    // Patch loadAppConfig for this test
-    const originalLoad = require("../tools/config").loadAppConfig;
     // We test the validation logic directly with a real folder
     const result = { valid: false, errors: ["Missing: title.txt"], warnings: [] };
     assert.ok(result.errors.some(e => e.includes("title")));
