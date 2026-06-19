@@ -19,6 +19,7 @@ fastlane/test_output
 # Claude Code
 .claude-plugin-config.json
 .claude/
+CLAUDE.md
 
 # Editor
 .vscode/
