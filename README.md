@@ -79,7 +79,7 @@ appwhoosh metadata validate <app-id>
 Before internal release:
 
 ```bash
-npm test
+pnpm test
 appwhoosh doctor
 ```
 

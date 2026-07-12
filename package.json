@@ -1,6 +1,7 @@
 {
   "name": "appwhoosh",
   "version": "1.0.0",
+  "packageManager": "pnpm@10.28.2",
   "description": "AI-powered macOS release pipeline for Android + iOS apps. Ship your apps. Whoosh.",
   "main": "cli/index.js",
   "bin": { "appwhoosh": "./cli/index.js" },
