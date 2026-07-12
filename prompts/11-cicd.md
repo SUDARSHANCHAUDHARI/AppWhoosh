@@ -12,13 +12,13 @@ Also: optional GitHub Actions workflows that trigger AppWhoosh remotely.
    - Steps:
      - Checkout
      - Setup Node.js 20
-     - `npm install`
-     - `npm test`
+     - `pnpm install`
+     - `pnpm test`
      - Upload test results as artifact
 
 2. Create `.github/workflows/lint.yml`:
    - Trigger: push, pull_request
-   - Run: `npx eslint tools/ mcp/ cli/ --ext .js`
+   - Run: `pnpm exec eslint tools/ mcp/ cli/ --ext .js`
    - Fail PR if any lint errors
 
 3. Create `.eslintrc.json`:
@@ -51,6 +51,6 @@ Also: optional GitHub Actions workflows that trigger AppWhoosh remotely.
    - How to trigger a release from GitHub UI
 
 ## Done when
-- `test.yml` runs `npm test` on push
+- `test.yml` runs `pnpm test` on push
 - `release-app.yml` appears in GitHub Actions "Run workflow" dropdown
-- ESLint config is in place and `npx eslint tools/` runs clean
+- ESLint config is in place and `pnpm exec eslint tools/` runs clean

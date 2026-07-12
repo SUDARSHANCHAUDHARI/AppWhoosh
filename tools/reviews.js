@@ -20,8 +20,8 @@ async function fetchReviews(appId, options = {}) {
   const { maxRating = 3, limit = 20 } = options;
 
   logger.warn(`[Reviews] Fetching reviews for ${pkg}...`);
-  logger.warn(`  Note: Real Play Console API requires googleapis npm package`);
-  logger.warn(`  Install: npm install googleapis`);
+  logger.warn(`  Note: Real Play Console API requires the googleapis package`);
+  logger.warn(`  Install: pnpm add googleapis`);
   logger.warn(`  Then: see https://developers.google.com/android-publisher/api-ref/rest/v3/reviews`);
 
   // Return placeholder reviews for development/testing
