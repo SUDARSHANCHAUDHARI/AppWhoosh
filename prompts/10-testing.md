@@ -55,6 +55,6 @@ Use Node.js built-in `node:test` (no extra test framework needed).
    A complete valid config fixture used across all tests.
 
 ## Done when
-- `npm test` runs all test files without errors
+- `pnpm test` runs all test files without errors
 - At least 20 test cases pass
 - No test makes real network calls or filesystem writes outside /tmp

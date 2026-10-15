@@ -53,7 +53,7 @@ Open each `.md` file, copy the full contents, paste into Claude Code chat.
 ## Recommended first session
 
 ```
-1. Run prompt 00 → get npm install working, CLI runs
+1. Run prompt 00 → get pnpm install working, CLI runs
 2. Run prompt 01 → add your real apps to the registry
 3. Run prompt 09 → add doctor + logging early (makes debugging easier)
 4. Run prompt 05 → get AI agent working

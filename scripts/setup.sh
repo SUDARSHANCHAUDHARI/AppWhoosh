@@ -24,10 +24,10 @@ if [ "$NODE_MAJOR" -lt 18 ]; then
 fi
 echo "  ✓  Node.js $(node -v)"
 
-# ── npm install ───────────────────────────────────────────────
+# ── pnpm install ──────────────────────────────────────────────
 echo "  →  Installing dependencies..."
-npm install --silent
-echo "  ✓  npm install complete"
+pnpm install --silent
+echo "  ✓  pnpm install complete"
 
 # ── .env setup ───────────────────────────────────────────────
 if [ ! -f "$ROOT/.env" ]; then
@@ -49,9 +49,9 @@ chmod +x "$ROOT/scripts/"*.sh 2>/dev/null || true
 chmod +x "$ROOT/scripts/screenshots/"*.sh 2>/dev/null || true
 echo "  ✓  Script permissions set"
 
-# ── npm link (global CLI) ─────────────────────────────────────
+# ── pnpm link (global CLI) ────────────────────────────────────
 echo "  →  Linking appwhoosh CLI globally..."
-npm link --silent 2>/dev/null || echo "  !  npm link failed — try: sudo npm link"
+pnpm link --global --silent 2>/dev/null || echo "  !  pnpm link failed — check PNPM_HOME"
 echo "  ✓  appwhoosh CLI linked"
 
 # ── Check optional tools ──────────────────────────────────────

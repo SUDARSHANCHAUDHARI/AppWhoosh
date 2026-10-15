@@ -161,7 +161,7 @@ bundle exec fastlane supply --version
 ```bash
 # Re-link the CLI
 cd appwhoosh-release-tool/
-npm link
+pnpm link --global
 # Verify:
 which appwhoosh
 appwhoosh --version
