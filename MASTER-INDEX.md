@@ -8,7 +8,7 @@ Everything in this project and where to find it.
 
 | # | File | Builds |
 |---|---|---|
-| 00 | `prompts/00-setup.md` | npm install, env, CLI sanity |
+| 00 | `prompts/00-setup.md` | pnpm install, env, CLI sanity |
 | 01 | `prompts/01-config-registry.md` | App config system |
 | 02 | `prompts/02-android-engine.md` | Android build + sign + deploy |
 | 03 | `prompts/03-ios-engine.md` | iOS build + certs + deploy |

@@ -11,7 +11,7 @@ The project root is: `appwhoosh-release-tool/`
 
 1. Read `CLAUDE.md` and `README.md` first to understand the full project.
 
-2. Run `npm install` and confirm all dependencies install without errors.
+2. Run `pnpm install` and confirm all dependencies install without errors.
 
 3. Verify Node.js version is 18+. If not, tell me what to install.
 
@@ -35,6 +35,6 @@ The project root is: `appwhoosh-release-tool/`
 7. Fix any import errors, missing modules, or path issues you find.
 
 ## Done when
-- `npm install` succeeds
+- `pnpm install` succeeds
 - `node cli/index.js list` runs and prints the registered apps
 - `.env` file exists with all keys documented
