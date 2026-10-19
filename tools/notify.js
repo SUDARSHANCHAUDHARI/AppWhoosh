@@ -1,6 +1,6 @@
 "use strict";
 
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 const https        = require("https");
 const logger       = require("./logger");
 
@@ -8,10 +8,14 @@ const logger       = require("./logger");
 function notifyMac(title, message, options = {}) {
   const sound    = options.sound    || "Glass";
   const subtitle = options.subtitle || "";
-  const sub      = subtitle ? `, subtitle:"${subtitle}"` : "";
-  const script   = `display notification "${message}" with title "${title}"${sub} sound name "${sound}"`;
+  // Values go in as argv, never into the script text, so quotes can't inject AppleScript or shell.
+  const script   = [
+    "on run argv",
+    "display notification (item 2 of argv) with title (item 1 of argv) subtitle (item 3 of argv) sound name (item 4 of argv)",
+    "end run",
+  ];
   try {
-    execSync(`osascript -e '${script}'`, { stdio: "ignore" });
+    execFileSync("osascript", [...script.flatMap(l => ["-e", l]), String(title), String(message), subtitle, sound], { stdio: "ignore" });
   } catch (_) {
     // Silent — notifications are optional
   }
